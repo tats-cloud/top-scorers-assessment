@@ -14,6 +14,12 @@
         Console.Write("Enter your file delimiter: ");
         string? delimiter = Console.ReadLine();
 
+        while (string.IsNullOrWhiteSpace(delimiter))
+        {
+            Console.WriteLine("Please enter a valid delimiter.");
+            delimiter = Console.ReadLine();
+        }
+
         var topScorers = new List<string>();
         var maxScore = -1;
 
@@ -27,7 +33,7 @@
             {
                 if (string.IsNullOrWhiteSpace(line)) continue;
 
-                var lineParts = line.Split(delimiter);
+                var lineParts = line.Split(delimiter.Trim());
 
                 if (lineParts.Length != 3) continue;
 

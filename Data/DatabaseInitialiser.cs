@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Configuration;
 
 namespace Data
 {
@@ -8,12 +9,24 @@ namespace Data
 
         public static void InitializeDatabase()
         {
-            string solutionFolder = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
+            string environmentName = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development";
 
-            string databaseFolder = Path.Combine(solutionFolder, "Database");
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .Build();
+
+            string connectionString = configuration.GetConnectionString("SqliteDb")
+                                  ?? throw new InvalidOperationException("Connection string 'SqliteDb' not found in any configuration file.");
+
+            string absoluteFilePath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, connectionString));
+            string databaseFolder = Path.GetDirectoryName(absoluteFilePath)
+                                    ?? throw new InvalidOperationException("Could not determine database directory.");
             Directory.CreateDirectory(databaseFolder);
 
-            DbPath = Path.Combine(databaseFolder, "TestData.db");
+            DbPath = absoluteFilePath;
 
             using var connection = new SqliteConnection($"Data Source={DbPath}");
             connection.Open();

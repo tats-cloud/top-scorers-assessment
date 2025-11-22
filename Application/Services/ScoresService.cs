@@ -42,6 +42,13 @@ namespace Application.Services
 
         public async Task<ScoreModel> GetTopScores(CancellationToken cancellationToken)
         {
+            var anyScores = await dbContext.Scorers.AnyAsync(cancellationToken);
+
+            if (!anyScores)
+            {
+                return new ScoreModel(new List<string>(), -1);
+            }
+
             var maxScore = await dbContext.Scorers.MaxAsync(i => i.Score, cancellationToken);
 
             var topScorerNames = await dbContext.Scorers

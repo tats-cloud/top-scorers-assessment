@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.Exceptions;
+using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using ScorerApi.Models;
 
@@ -23,11 +24,19 @@ namespace ScorerApi.Controllers
         [Route("individual-score/{scoreId}")]
         public async Task<IActionResult> GetIndividualScore(int scoreId, CancellationToken cancellationToken)
         {
-            var individualScore = await scoresService.GetIndividualScore(scoreId, cancellationToken);
+            try
+            {
+                var individualScore = await scoresService.GetIndividualScore(scoreId, cancellationToken);
 
-            var response = IndividualScoreResponse.FromApplicationModel(individualScore);
+                var response = IndividualScoreResponse.FromApplicationModel(individualScore);
 
-            return Ok(response);
+                return Ok(response);
+            }
+            catch (ScoreNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpGet]

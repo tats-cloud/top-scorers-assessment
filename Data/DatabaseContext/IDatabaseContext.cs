@@ -9,5 +9,6 @@ namespace Data.DatabaseContext
 
         bool EnsureCreated();
         int SaveChanges();
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

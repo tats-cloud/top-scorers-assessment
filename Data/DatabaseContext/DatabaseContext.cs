@@ -17,6 +17,11 @@ namespace Data.DatabaseContext
             return base.SaveChanges();
         }
 
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
+        {
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
         public bool EnsureCreated()
         {
             return base.Database.EnsureCreated();

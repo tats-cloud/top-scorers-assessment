@@ -6,6 +6,6 @@ namespace Application.Services
     {
         public Task<int> CreateScoreAsync(CreateScoreModel score, CancellationToken cancellationToken);
         public Task<IndividualScoreModel> GetIndividualScore(int scoreId, CancellationToken cancellationToken);
-        public Task<IEnumerable<ScoreModel>> GetTopScores(CancellationToken cancellationToken);
+        public Task<ScoreModel> GetTopScores(CancellationToken cancellationToken);
     }
 }

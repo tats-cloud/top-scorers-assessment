@@ -1,3 +1,4 @@
+using Application.Services;
 using Data;
 using Data.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,9 @@ namespace ScorerApi
             DatabaseInitializer.InitializeDatabase();
             builder.Services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlite($"Data Source={DatabaseInitializer.DbPath}"));
+
+            builder.Services.AddScoped<IDatabaseContext, DatabaseContext>();
+            builder.Services.AddScoped<IScoresService, ScoresService>();
 
             var app = builder.Build();
 

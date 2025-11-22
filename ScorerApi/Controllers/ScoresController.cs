@@ -34,9 +34,9 @@ namespace ScorerApi.Controllers
         [Route("top-scores")]
         public async Task<IActionResult> GetTopScores(CancellationToken cancellationToken)
         {
-            var scores = await scoresService.GetTopScores(cancellationToken);
+            var topScores = await scoresService.GetTopScores(cancellationToken);
 
-            var response = scores.Select(ScoreResponse.FromApplicationModel).ToList();
+            var response = ScoreResponse.FromApplicationModel(topScores);
 
             return Ok(response);
         }

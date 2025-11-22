@@ -32,8 +32,6 @@ namespace CsvProcessor
 
             try
             {
-                _dbContext.EnsureCreated();
-
                 using StreamReader reader = File.OpenText(filePath);
 
                 string? line;

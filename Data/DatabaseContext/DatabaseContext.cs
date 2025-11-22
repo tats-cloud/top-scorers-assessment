@@ -7,9 +7,9 @@ namespace Data.DatabaseContext
     {
         public DbSet<Scorer> Scorers { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options)
+        : base(options)
         {
-            optionsBuilder.UseSqlite("Data Source=scores.db");
         }
 
         public override int SaveChanges()

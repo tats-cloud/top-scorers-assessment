@@ -416,3 +416,6 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Exclude the entire 'Database' directory at the root level
+/Database/

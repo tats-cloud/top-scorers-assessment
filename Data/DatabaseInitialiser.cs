@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Data
 {
-    public static class DatabaseInitializer
+    public static class DatabaseInitialiser
     {
         public static string? DbPath { get; private set; }
 

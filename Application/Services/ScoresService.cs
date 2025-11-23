@@ -46,7 +46,7 @@ namespace Application.Services
 
             if (!anyScores)
             {
-                return new ScoreModel(new List<string>(), -1);
+                return new ScoreModel([], -1);
             }
 
             var maxScore = await dbContext.Scorers.MaxAsync(i => i.Score, cancellationToken);

@@ -9,23 +9,7 @@ namespace CsvProcessor
 
         public void RunDataImport()
         {
-            Console.Write("Enter file path: ");
-            string? filePath = Console.ReadLine();
-
-            while (!File.Exists(filePath))
-            {
-                Console.WriteLine("File not found. Please try again.");
-                filePath = Console.ReadLine();
-            }
-
-            Console.Write("Enter your file delimiter: ");
-            string? delimiter = Console.ReadLine();
-
-            while (string.IsNullOrWhiteSpace(delimiter))
-            {
-                Console.WriteLine("Please enter a valid delimiter.");
-                delimiter = Console.ReadLine();
-            }
+            var (filePath, delimiter) = ProcessCsvInput();
 
             var topScorers = new List<string>();
             var maxScore = -1;
@@ -51,14 +35,7 @@ namespace CsvProcessor
 
                     if (int.TryParse(lineParts[2].Trim(), out int score))
                     {
-                        _dbContext.Scorers.Add(new Scorer
-                        {
-                            FirstName = firstName,
-                            SecondName = secondName,
-                            Score = score,
-                        });
-
-                        _dbContext.SaveChanges();
+                        SaveNewScores(firstName, secondName, score);
 
                         if (score > maxScore)
                         {
@@ -76,7 +53,6 @@ namespace CsvProcessor
             catch (Exception ex)
             {
                 Console.WriteLine($"An unexpected error occurred: {ex.Message}");
-                Console.WriteLine($"Inner exception: {ex.InnerException?.Message}");
                 return;
             }
 
@@ -88,6 +64,41 @@ namespace CsvProcessor
             }
 
             Console.WriteLine($"Score: {maxScore}");
+        }
+
+        private static (string FilePath, string Delimiter) ProcessCsvInput()
+        {
+            Console.Write("Enter file path: ");
+            string? filePath = Console.ReadLine();
+
+            while (!File.Exists(filePath))
+            {
+                Console.WriteLine("File not found. Please try again.");
+                filePath = Console.ReadLine();
+            }
+
+            Console.Write("Enter your file delimiter: ");
+            string? delimiter = Console.ReadLine();
+
+            while (string.IsNullOrWhiteSpace(delimiter))
+            {
+                Console.WriteLine("Please enter a valid delimiter.");
+                delimiter = Console.ReadLine();
+            }
+
+            return (filePath, delimiter);
+        }
+
+        private void SaveNewScores(string firstName, string secondName, int score)
+        {
+            _dbContext.Scorers.Add(new Scorer
+            {
+                FirstName = firstName,
+                SecondName = secondName,
+                Score = score,
+            });
+
+            _dbContext.SaveChanges();
         }
     }
 }

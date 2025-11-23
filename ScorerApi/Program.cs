@@ -16,16 +16,16 @@ namespace ScorerApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            DatabaseInitializer.InitializeDatabase();
+            DatabaseInitialiser.InitializeDatabase();
             builder.Services.AddDbContext<DatabaseContext>(options =>
-                options.UseSqlite($"Data Source={DatabaseInitializer.DbPath}"));
+                options.UseSqlite($"Data Source={DatabaseInitialiser.DbPath}"));
 
             builder.Services.AddScoped<IDatabaseContext, DatabaseContext>();
             builder.Services.AddScoped<IScoresService, ScoresService>();
 
             var app = builder.Build();
 
-            DatabaseInitializer.EnsureDbCreated(app.Services);
+            DatabaseInitialiser.EnsureDbCreated(app.Services);
 
             if (app.Environment.IsDevelopment())
             {

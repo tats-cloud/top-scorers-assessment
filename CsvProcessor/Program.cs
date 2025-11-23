@@ -7,15 +7,16 @@ class Program
 {
     static void Main()
     {
-        DatabaseInitializer.InitializeDatabase();
+        DatabaseInitialiser.InitializeDatabase();
 
-        var options = new DbContextOptionsBuilder<DatabaseContext>().UseSqlite($"Data Source={DatabaseInitializer.DbPath}").Options;
+        var options = new DbContextOptionsBuilder<DatabaseContext>()
+            .UseSqlite($"Data Source={DatabaseInitialiser.DbPath}")
+            .Options;
 
         using DatabaseContext dbContext = new(options);
         dbContext.EnsureCreated();
 
         var processor = new DataProcessor(dbContext);
-
 
         processor.RunDataImport();
     }

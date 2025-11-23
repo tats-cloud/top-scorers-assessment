@@ -3,14 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.DatabaseContext
 {
-    public class DatabaseContext : DbContext, IDatabaseContext
+    public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbContext(options), IDatabaseContext
     {
         public DbSet<Scorer> Scorers { get; set; }
-
-        public DatabaseContext(DbContextOptions<DatabaseContext> options)
-        : base(options)
-        {
-        }
 
         public override int SaveChanges()
         {

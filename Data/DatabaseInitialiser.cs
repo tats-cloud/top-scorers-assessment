@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Data
 {
@@ -32,6 +33,13 @@ namespace Data
             connection.Open();
 
             Console.WriteLine($"Database ready at: {DbPath}");
+        }
+
+        public static void EnsureDbCreated(IServiceProvider services)
+        {
+            using var scope = services.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<DatabaseContext.DatabaseContext>();
+            context.EnsureCreated();
         }
     }
 

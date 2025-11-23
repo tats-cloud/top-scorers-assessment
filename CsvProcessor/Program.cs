@@ -11,12 +11,11 @@ class Program
 
         var options = new DbContextOptionsBuilder<DatabaseContext>().UseSqlite($"Data Source={DatabaseInitializer.DbPath}").Options;
 
-        using DatabaseContext concreteDbContext = new(options);
-        IDatabaseContext dbContext = concreteDbContext;
+        using DatabaseContext dbContext = new(options);
+        dbContext.EnsureCreated();
 
         var processor = new DataProcessor(dbContext);
 
-        dbContext.EnsureCreated();
 
         processor.RunDataImport();
     }

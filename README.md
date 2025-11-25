@@ -27,6 +27,10 @@ The console app directly depends on:
 * The `DatabaseContext`
 * A `DataProcessor` for processing the CSV data
 
+Note that the CSV processor assumes that:
+* All CSV files have three columns (rows with more or less columns will be ignored)
+* The score can be parsed to an int
+
 ### **3. ScorerApi**
 
 Responsible for:
@@ -66,6 +70,8 @@ A central path is resolved using `DatabaseInitialiser`, which:
 
 ## How to Run the System
 
+This project runs on .NET 8.0.
+
 ### **1. Run the console app**
 
 This step:
@@ -100,6 +106,7 @@ The API:
 ```
 dotnet run --project ScorerApi
 ```
+Then the Swagger page can be accessed at `https://localhost:7151/swagger/index.html`
 
 ---
 
